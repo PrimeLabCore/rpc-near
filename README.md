@@ -1,16 +1,20 @@
 # RPC-NEAR MAINNET
 
-# ReadME for RPC mainnet node setup
-- AWS_INSTANCE_ID:        i-0a43ade9a9b4637f8
-- AWS_REGION:             us-east-1
-- AWS_INSTANCE_NAME:      mainnet
-- AWS_INSTANCE_PUBLIC_IP: 44.203.125.87
+# ReadME for RPC mainnet node setup infrastructure as code
+<h2>Requirements</h2>
+>> Ansible
+>> Packer
+>> Terraform
 
-# To connect to the Instance
-- On the AWS console click on the instance id 
-- Navigate to security and click on the security group id "sg-02071c31ad4e9bf20 (launch-wizard-4)"
-- Open port 22 and add your IP for SSH Connection
-- Proceed to terminal and run <ssh -i "testnet.pem" ubuntu@ec2-44-203-125-87.compute-1.amazonaws.com> to connect to the instance
+- clone the repository
+- cd into the packer/
+- vi `aws-mainnet.pkr.hcl` and fill the gap for aws profile 
+- run `packer build aws-mainnet.pkr.hcl` 
+- copy ami-id from output `mainnet-manifest.json` and replace value in `variables.tf`
+- run `terraform init`
+- run `terraform plan` to view infrastructure
+- run `terraform apply` to spin up instance with neard service running as RPC mainnet
+- connect to the instance
 
 # Run the neard service
 - Run <sudo systemctl status neard.service> to view the running neard service

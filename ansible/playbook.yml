@@ -1,0 +1,49 @@
+---
+- name: 'Provision Mainnet Image'
+  hosts: default
+  become: true
+  tasks:
+    - name: Install dependencies
+      apt:
+        force_apt_get: yes
+        update_cache: yes
+        pkg:
+          - acl
+          - ansible
+          - build-essential
+          - jq
+          - packer
+          - python3-pip
+          - zip
+          - cmake
+          - pkg-config
+          - libssl-dev
+          - git
+          - llvm-dev
+          - clang
+          - libclang-dev
+          - curl
+
+    - name: Copy neard startup script
+      copy:
+        src: neard.sh
+        dest: /home/
+        owner: root
+        mode: 0755
+
+    - name: Make neard startup script executable
+      shell: chmod +x /home/neard.sh
+
+    - name: Copy neard.service
+      copy:
+        src: neard.service
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+
+    - name: Enable neard.service
+      systemd:
+        name: neard.service
+        enabled: yes
+      
+      
