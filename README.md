@@ -2,9 +2,10 @@
 
 # ReadME for RPC mainnet node setup infrastructure as code
 <h2>Requirements</h2>
->> Ansible
->> Packer
->> Terraform
+ + Ansible
+ + Packer
+ + Terraform
+
 
 - clone the repository
 - cd into the packer/
