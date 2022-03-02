@@ -1,10 +1,10 @@
-# rpc-near
+# RPC-NEAR MAINNET
 
 # ReadME for RPC mainnet node setup
-AWS_INSTANCE_ID:        i-0a43ade9a9b4637f8
-AWS_REGION:             us-east-1
-AWS_INSTANCE_NAME:      mainnet
-AWS_INSTANCE_PUBLIC_IP: 44.203.125.87
+- AWS_INSTANCE_ID:        i-0a43ade9a9b4637f8
+- AWS_REGION:             us-east-1
+- AWS_INSTANCE_NAME:      mainnet
+- AWS_INSTANCE_PUBLIC_IP: 44.203.125.87
 
 # To Connect to the instance
 >> On the AWS console click on the instance id 
