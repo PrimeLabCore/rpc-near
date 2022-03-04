@@ -9,7 +9,7 @@
 
 - clone the repository
 - cd into the packer/
-- vi `aws-mainnet.pkr.hcl` and fill the gap for aws profile 
+- vi `aws-mainnet.pkr.hcl` and replace necessary values 
 - run `packer build aws-mainnet.pkr.hcl` 
 - copy ami-id from output `mainnet-manifest.json` and replace value in `variables.tf`
 - run `terraform init`
