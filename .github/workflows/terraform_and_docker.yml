@@ -107,7 +107,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/near-rpc-for-primelab/rpc:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
