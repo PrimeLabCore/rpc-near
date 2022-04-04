@@ -29,7 +29,7 @@
 .
 ├── autoscaling.tf
 ├── data.tf
-├── Dockerfile
+├── Dockerfile                          // RPC node Dockerfile definition, fetches tagged version of nearcore, builds utilizing make, and downloads config.s
 ├── ecr.tf
 ├── ecs_service.tf
 ├── ecs_task_definition..tf
@@ -44,15 +44,15 @@
 ├── params
 │   └── us-east-1
 │       └── dev
-│           ├── backend.config
-│           └── variables.tfvars
+│           ├── backend.config         // Includes connection configuration variables (**Modify this file**)
+│           └── variables.tfvars       // Includes additional network variable definition (**Modify this file**)
 ├── provider.tf
 ├── r53.tf
 ├── README.md
 ├── secrets_manager.tf
 ├── security_groups.tf
 ├── task-definitions
-│   └── rpc_node.json
+│   └── rpc_node.json                  // Defines the properties of the RPC node container
 ├── tls_private_key.tf
 ├── userdata
 │   └── ecs_user_data.sh               // Includes the `ECS_CLUSTER` variable definition in `/etc/ecs/ecs.config`
@@ -62,8 +62,8 @@
 
 ## Setup
 
-1. Fork the repo located [here](https://github.com/NearPrime/rpc-near).
-2. Clone the repo by using the following command
+1. Fork the repository located [here](https://github.com/NearPrime/rpc-near).
+2. Clone the repository by using the following command
     
     ```
     git clone git@github.com:(your_github_username)/rpc-near.git
