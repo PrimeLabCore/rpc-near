@@ -1,0 +1,192 @@
+name: "Terraform and Docker"
+permissions:
+  id-token: write
+  pull-requests: write
+  contents: read
+  deployments: write
+on:
+  push:
+    branches:
+      - main
+      - rpc-iac
+
+jobs:
+  dev-terraform:
+    name: "Dev Terraform"
+    runs-on: ubuntu-latest
+    environment: dev-us-east-1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+     
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.6.1
+        with:
+          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+          aws-region: us-east-1
+          role-skip-session-tagging: true
+     
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+     
+      - name: "Terraform Init"
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.1.5
+          tf_actions_subcommand: "init"
+          tf_actions_working_dir: "."
+          tf_actions_comment: true
+          args: '-var-file="./params/us-east-1/dev/variables.tfvars" -backend-config="./params/us-east-1/dev/backend.config"'
+   
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+   
+      - name: Terraform Plan
+        id: plan
+        uses: hashicorp/terraform-github-actions@master
+        if: github.event_name == 'pull_request'
+        with:
+          tf_actions_version: 1.1.5
+          tf_actions_subcommand: "plan"
+          tf_actions_working_dir: "."
+          tf_actions_comment: true
+          args: '-var-file="./params/us-east-1/dev/variables.tfvars"'
+        
+      # - name: Update Pull Request
+      #   uses: actions/github-script@0.9.0
+      #   if: github.event_name == 'pull_request'
+      #   env:
+      #     PLAN: "terraform\n${{ steps.reformat.outputs.stdout }}"
+      #   with:
+      #     script: |
+      #       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+      #       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+      #       #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+      #       <details><summary>Show Plan</summary>
+      #       \`\`\`\n
+      #       ${process.env.PLAN}
+      #       \`\`\`
+      #       </details>
+      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
+      #   continue-on-error: true
+   
+      # - name: Terraform Plan Status
+      #   if: steps.plan.outcome == 'failure'
+      #   run: exit 1
+   
+      - name: "Terraform Apply"
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.1.5
+          tf_actions_subcommand: "apply"
+          tf_actions_working_dir: "."
+          tf_actions_comment: true
+          args: '-var-file="./params/us-east-1/dev/variables.tfvars"'
+  
+  sandbox-rpc-build:
+    name: Build RPC Node Image
+    runs-on: ubuntu-latest
+    environment: dev-us-east-1
+    if: github.ref == 'refs/heads/main'
+    needs: dev-terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.6.1
+        with:
+        #   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #   aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+          aws-region: us-east-1
+          role-skip-session-tagging: true
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}-rpc
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build, tag, and push image to Amazon ECR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          builder: ${{ steps.buildx.outputs.name }}
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        continue-on-error: true
+
+  rpc-deploy:
+    needs: sandbox-rpc-build
+    name: Deploy RPC to ECS
+    runs-on: ubuntu-latest
+    environment: dev-us-east-1
+    steps:
+    
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1.6.1
+      with:
+        # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+        aws-region: us-east-1
+        role-skip-session-tagging: true
+    
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition rpc-node-dev-service --query taskDefinition > task-definition.json
+    
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: rpc-dev-node
+        image: ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+    
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: rpc-node-dev-service
+        cluster: near-dev-us-east-1-cluster
+        wait-for-service-stability: false
