@@ -1,7 +1,7 @@
 resource "aws_ecs_task_definition" "primelab_nodes" {
   for_each = var.primelab_nodes
   family   = "${each.key}-${var.environment}-service"
-  container_definitions = templatefile("${path.module}/task-definitions/primelab_node.json", {
+  container_definitions = templatefile("${path.module}/task-definitions/rpc_node.json", {
     env        = var.environment
     region     = var.region
     dockerTag  = each.value.dockerTag
