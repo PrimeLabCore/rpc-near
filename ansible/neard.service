@@ -1,9 +1,0 @@
-[Unit]
-Description=Start neard node service for mainnet
-
-[Service]
-ExecStart=/home/neard.sh
-Restart=always
-
-[Install]
-WantedBy=multi-user.target

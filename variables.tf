@@ -1,29 +1,102 @@
-variable "availability_zone" {
-  type    = string
-  default = "us-east-1a"
-}
-
 variable "region" {
-  type    = string
-  default = "us-east-1"
+  type        = string
+  description = "Name of region for deployment."
+  default     = "us-east-1"
 }
 
-variable "instance_type" {
-  type    = string
-  default = "c5.2xlarge"
+variable "environment" {
+  type        = string
+  description = "Name of Environment for deployment."
+  default     = null
 }
 
-variable "ami" {
-  type    = string
-  default = "ami-0069be05df48d3678"
+variable "vpc_cidr" {
+  description = "VPC Cidr Block"
+  type        = string
+  default     = null
 }
 
-variable "key_name" {
-  type    = string
-  default = "testnet.pem"
+variable "azs" {
+  description = "AZ's for the VPC"
+  type        = list(string)
+  default     = []
 }
 
-variable "profile" {
-  type    = string
-  default = "cloud-account-administrator-361205757716"
+variable "private_subnets" {
+  description = "Private Subnets for the VPC"
+  type        = list(string)
+  default     = []
+}
+
+variable "public_subnets" {
+  description = "Public Subnets for the VPC"
+  type        = list(string)
+  default     = []
+}
+
+variable "database_subnets" {
+  description = "Database Subnets for the VPC"
+  type        = list(string)
+  default     = []
+}
+
+variable "ecs_asg_max_size" {
+  description = "EC2 Capacity Providers ASG - Max Number of Instances"
+  type        = number
+  default     = 0
+}
+
+variable "ecs_asg_min_size" {
+  description = "EC2 Capacity Providers ASG - Min Number of Instances"
+  type        = number
+  default     = 0
+}
+
+variable "ecs_asg_desired_capacity" {
+  description = "EC2 Capacity Providers ASG - Min Number of Instances"
+  type        = number
+  default     = 0
+}
+
+variable "ecs_instance_type" {
+  description = "Instance Type for ECS Cluster"
+  type        = string
+  default     = "c5.4xlarge"
+}
+
+variable "docker_tag" {
+  default = {
+    rpc       = ""
+  }
+}
+
+variable "rpc_node_cpu" {
+  description = "ECS Container - RPC Node CPU"
+  type        = number
+  default     = 4096
+}
+
+variable "rpc_node_ram" {
+  description = "ECS Container - RPC Node RAM"
+  type        = number
+  default     = 16384
+}
+
+variable "ecr_subrepositories" {
+  description = "The Sub-Repositories for each of the node types"
+  type        = list(string)
+  default     = []
+}
+
+variable "primelab_nodes" {
+  description = "Primelab Node Parameters"
+  default = { 
+    "rpc" = {
+      "container_name" = "rpc_node"
+      #"node_keys"      = "./node-config/node_keys/rpc_keys.json"
+      #"config"         = "./node-config/config/rpc_config.json"
+      "dockerTag"      = ""
+      # "dockerRepo"     = 1
+    }
+  }
 }
