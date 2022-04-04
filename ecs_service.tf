@@ -1,18 +1,18 @@
 resource "aws_ecs_service" "rpc_node_service" {
   name                   = "${rpc}-${var.environment}-service"
   cluster                = module.ecs.ecs_cluster_id
-  task_definition        = aws_ecs_task_definition.primelab_nodes[each.key].arn
+  task_definition        = aws_ecs_task_definition.primelab_nodes.arn
   enable_execute_command = true
   desired_count          = 1
   launch_type            = "FARGATE"
   load_balancer {
-    target_group_arn = aws_lb_target_group.primelab_tg_3030[each.key].arn
-    container_name   = each.value.container_name
+    target_group_arn = aws_lb_target_group.primelab_tg_3030.arn
+    container_name   = var.container_name
     container_port   = 3030
   }
   load_balancer {
-    target_group_arn = aws_lb_target_group.primelab_tg_24567[each.key].arn
-    container_name   = each.value.container_name
+    target_group_arn = aws_lb_target_group.primelab_tg_24567.arn
+    container_name   = var.container_name
     container_port   = 24567
   }
   network_configuration {

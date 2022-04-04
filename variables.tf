@@ -65,9 +65,7 @@ variable "ecs_instance_type" {
 }
 
 variable "docker_tag" {
-  default = {
-    rpc = ""
-  }
+  default = ""
 }
 
 variable "rpc_node_cpu" {
@@ -92,9 +90,13 @@ variable "primelab_nodes" {
   description = "Primelab Node Parameters"
   default = {
     "rpc" = {
-      "container_name" = "rpc_node"
       "dockerTag"      = ""
       "dockerRepo"     = 0
     }
   }
+}
+
+variable "container_name" {
+  description = "RPC Container name"
+  default = "rpc_node"
 }

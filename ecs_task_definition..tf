@@ -1,14 +1,11 @@
 resource "aws_ecs_task_definition" "primelab_nodes" {
-  for_each = var.primelab_nodes
-  family   = "${each.key}-${var.environment}-service"
+  family   = "rpc-${var.environment}-service"
   container_definitions = templatefile("${path.module}/task-definitions/rpc_node.json", {
     env        = var.environment
     region     = var.region
-    dockerTag  = each.value.dockerTag
-    dockerRepo = aws_ecr_repository.near_rpc_for_primelab[each.value.dockerRepo].repository_url
-    #config_param_store    = aws_ssm_parameter.node_config[each.key].name
-    #node_keys_param_store = aws_ssm_parameter.node_keys[each.key].name
-    containerName = each.value.container_name
+    dockerTag  = var.docker_tag
+    dockerRepo = aws_ecr_repository.near_rpc_for_primelab.repository_url
+    containerName = var.container_name
   })
   requires_compatibilities = ["EC2"]
   network_mode             = "awsvpc"
