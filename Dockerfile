@@ -38,7 +38,7 @@ VOLUME  [ /near ]
 
 WORKDIR /near
 
-RUN     git clone https://github.com/near/nearcore && cd nearcore;git fetch origin --tags && git checkout tags/${NEAR_VERSION} -b mynode && make release; cp ./target/release/neard /tmp/
+RUN     git clone https://github.com/near/nearcore && cd nearcore;git fetch origin --tags && git checkout tags/1.25.0 -b mynode && make release; cp ./target/release/neard /tmp/
 
 
 
