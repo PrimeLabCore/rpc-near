@@ -1,15 +1,27 @@
-## ReadME
+# RPC Node Deployment Pipeline
 
-This Repository contains Terraform code to help NEAR developers setup an RPC-node with the mainnet chain using Terraform and Github Actions.
+# Quickly scale up RPC Node deployments via Terraform
+
+## About
+
+### Why (is this needed):
+
+- With the communication between users and the network relying solely on deployed RPC node infrastructure having the ability to quickly horizontally scale your RPC nodes to handle the required throughput capacity.
+
+### Who (would this benefit):
+
+- DAPP Developers
+- Network Metric Aggregators
+- Users in terms of more reliable transaction processing
+- SAAS Providers
+
+### How (does this achieve a solution):
 
 ## Prerequisites
-- Terraform installed (For Local testing)
-- Assumes developer has previous experience with NEAR
-- AWS Account with OIDC Role for github authentication
 
-## Instruction
-- Fork the repo.
-- Update the OIDC_ROLEE_ARN value in the github actions secrets
-- Clone the forked repo.
-- Replace the AWS variables and parameters with values associated  with your aws account.
-- Commit and Push Code back to Github to trigger github actions to setup Terraform Infrastructure, Build, Tag, push rpc-node image to Amazon Elastic Container Registry and deploy image to Amazon Elastic Container Service.
+- AWS Account
+- 
+
+## File Tree
+
+## Setup
