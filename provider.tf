@@ -1,6 +1,6 @@
 provider "aws" {
-  region  = var.region
-  profile = "cloud-account-administrator-464082997241"
+  region = var.region
+  # profile = "cloud-account-administrator-464082997241"
   default_tags {
     tags = {
       Region     = var.region,
