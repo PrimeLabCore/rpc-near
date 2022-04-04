@@ -8,7 +8,9 @@ on:
   push:
     branches:
       - main
+      - rpc-iac
   pull_request:
+
 jobs:
   dev-terraform:
     name: "Dev Terraform"
@@ -21,7 +23,9 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
-          role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
           aws-region: us-east-1
           role-skip-session-tagging: true
      
@@ -37,8 +41,6 @@ jobs:
           tf_actions_working_dir: "."
           tf_actions_comment: true
           args: '-var-file="./params/us-east-1/dev/variables.tfvars" -backend-config="./params/us-east-1/dev/backend.config"'
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
    
       - name: Terraform Validate
         id: validate
@@ -54,16 +56,13 @@ jobs:
           tf_actions_working_dir: "."
           tf_actions_comment: true
           args: '-var-file="./params/us-east-1/sandbox/variables.tfvars"'
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-   
+        
       - name: Update Pull Request
         uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.reformat.outputs.stdout }}"
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
@@ -96,9 +95,7 @@ jobs:
           tf_actions_working_dir: "."
           tf_actions_comment: true
           args: '-var-file="./params/us-east-1/dev/variables.tfvars"'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  
   sandbox-rpc-build:
     name: Build RPC Node Image
     runs-on: ubuntu-latest
@@ -112,7 +109,9 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
-          role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #  role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
           aws-region: us-east-1
           role-skip-session-tagging: true
 
@@ -160,7 +159,9 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1.6.1
       with:
-        role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
         aws-region: us-east-1
         role-skip-session-tagging: true
     

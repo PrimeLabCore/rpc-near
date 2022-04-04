@@ -43,19 +43,19 @@ variable "database_subnets" {
 variable "ecs_asg_max_size" {
   description = "EC2 Capacity Providers ASG - Max Number of Instances"
   type        = number
-  default     = 0
+  default     = 1
 }
 
 variable "ecs_asg_min_size" {
   description = "EC2 Capacity Providers ASG - Min Number of Instances"
   type        = number
-  default     = 0
+  default     = 1
 }
 
 variable "ecs_asg_desired_capacity" {
   description = "EC2 Capacity Providers ASG - Min Number of Instances"
   type        = number
-  default     = 0
+  default     = 1
 }
 
 variable "ecs_instance_type" {
@@ -66,7 +66,7 @@ variable "ecs_instance_type" {
 
 variable "docker_tag" {
   default = {
-    rpc       = ""
+    rpc = ""
   }
 }
 
@@ -90,13 +90,11 @@ variable "ecr_subrepositories" {
 
 variable "primelab_nodes" {
   description = "Primelab Node Parameters"
-  default = { 
+  default = {
     "rpc" = {
       "container_name" = "rpc_node"
-      #"node_keys"      = "./node-config/node_keys/rpc_keys.json"
-      #"config"         = "./node-config/config/rpc_config.json"
       "dockerTag"      = ""
-      # "dockerRepo"     = 1
+      "dockerRepo"     = 0
     }
   }
 }

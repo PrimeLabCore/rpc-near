@@ -1,5 +1,5 @@
 resource "aws_launch_template" "ecs_indexer_launch_template" {
-  name          = "near-${var.environment}-${var.region}-ec2-launch-template"
+  name          = "near-rpc-${var.environment}-${var.region}-ec2-launch-template"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.ecs_instance_type
   user_data = base64encode(templatefile("${path.module}/userdata/ecs_user_data.sh", {
