@@ -101,3 +101,7 @@ variable "container_name" {
   default     = "rpc_node"
 }
 
+variable "rpc_node" {
+  default    = "rpc_node"
+  dockerRepo = 0
+}

@@ -1,5 +1,4 @@
 resource "aws_lb" "primelab_nlb" {
-  for_each                   = var.primelab_nodes
   name                       = "rpc-${var.environment}-nlb"
   internal                   = false
   load_balancer_type         = "network"
@@ -8,7 +7,6 @@ resource "aws_lb" "primelab_nlb" {
 }
 
 resource "aws_lb_target_group" "primelab_tg_3030" {
-  for_each    = var.primelab_nodes
   name        = "rpc-${var.environment}-tg-3030"
   target_type = "ip"
   port        = 3030
@@ -17,7 +15,6 @@ resource "aws_lb_target_group" "primelab_tg_3030" {
 }
 
 resource "aws_lb_target_group" "primelab_tg_24567" {
-  for_each    = var.primelab_nodes
   name        = "rpc-${var.environment}-tg-24567"
   target_type = "ip"
   port        = 24567
@@ -26,8 +23,7 @@ resource "aws_lb_target_group" "primelab_tg_24567" {
 }
 
 resource "aws_lb_listener" "primelab_node_listener_3030" {
-  for_each          = var.primelab_nodes
-  load_balancer_arn = aws_lb.primelab_nlb[each.key].arn
+  load_balancer_arn = aws_lb.primelab_nlb.arn
   port              = 3030
   protocol          = "TCP"
 
@@ -38,13 +34,12 @@ resource "aws_lb_listener" "primelab_node_listener_3030" {
 }
 
 resource "aws_lb_listener" "primelab_node_listener_24567" {
-  for_each          = var.primelab_nodes
-  load_balancer_arn = aws_lb.primelab_nlb[each.key].arn
+  load_balancer_arn = aws_lb.primelab_nlb.arn
   port              = 24567
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.primelab_tg_24567[each.key].arn
+    target_group_arn = aws_lb_target_group.primelab_tg_24567.arn
   }
 }

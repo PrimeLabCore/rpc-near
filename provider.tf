@@ -1,8 +1,6 @@
 provider "aws" {
   region = var.region
-  assume_role {
-    role_arn = "arn:aws:iam::464082997241:role/NearPrimeOIDCDeploymentRole"
-  }
+  profile = "cloud-account-administrator-464082997241"
   default_tags {
     tags = {
       Region     = var.region,
