@@ -7,7 +7,7 @@ variable "region" {
 variable "environment" {
   type        = string
   description = "Name of Environment for deployment."
-  default     = dev
+  default     = "dev"
 }
 
 variable "vpc_cidr" {
@@ -81,9 +81,8 @@ variable "rpc_node_ram" {
 }
 
 variable "ecr_subrepositories" {
-  description = "The Sub-Repositories for each of the node types"
-  type        = list(string)
-  default     = []
+  type    = string
+  default = "rpc"
 }
 
 variable "primelab_nodes" {

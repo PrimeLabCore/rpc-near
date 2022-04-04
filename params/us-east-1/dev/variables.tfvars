@@ -21,6 +21,4 @@ database_subnets = [
   "10.0.21.0/24",
   "10.0.22.0/24"
 ]
-ecr_subrepositories = [
-  "rpc"
-]
+ecr_subrepositories = "rpc"

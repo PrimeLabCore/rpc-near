@@ -8,7 +8,7 @@ resource "aws_route53_record" "node_route53_records" {
   name     = "${each.key}.nearprime.io"
   type     = "CNAME"
   ttl      = "300"
-  records  = [aws_lb.primelab_nlb[each.key].dns_name]
+  records  = [aws_lb.primelab_nlb.dns_name]
 }
 
 
