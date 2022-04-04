@@ -1,0 +1,38 @@
+[
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/${env}/${containerName}-logs",
+          "awslogs-stream-prefix": "${env}",
+          "awslogs-region": "${region}",
+          "awslogs-create-group": "true"
+        }
+      },
+      "portMappings": [
+        {
+          "containerPort": 3030,
+          "hostPort": 3030,
+          "protocol": "tcp"
+        },
+        {
+          "containerPort": 24567,
+          "hostPort": 24567,
+          "protocol": "tcp"
+        }
+      ],
+      "tags": {},
+      "essential": true,
+      "mountPoints": [],
+      "volumesFrom": [],
+      "secrets": [],
+      "environment": [
+        {
+          "name": "environment",
+          "value": "${env}"
+        }
+      ],
+      "image": "${dockerRepo}:${dockerTag}",
+      "name": "${containerName}"
+    }
+  ]

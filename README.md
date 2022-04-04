@@ -1,28 +1,15 @@
-# RPC-NEAR MAINNET
+## ReadME
 
-# ReadME for RPC mainnet node setup infrastructure as code
-<h2>Requirements</h2>
- + Ansible
- + Packer
- + Terraform
+This Repository contains Terraform code to help NEAR developers setup an RPC-node with the mainnet chain using Terraform and Github Actions.
 
+## Prerequisites
+- Terraform installed (For Local testing)
+- Assumes developer has previous experience with NEAR
+- AWS Account with OIDC Role for github authentication
 
-- clone the repository
-- cd into the packer/
-- vi `aws-mainnet.pkr.hcl` and fill the gap for aws profile 
-- run `packer build aws-mainnet.pkr.hcl` 
-- copy ami-id from output `mainnet-manifest.json` and replace value in `variables.tf`
-- run `terraform init`
-- run `terraform plan` to view infrastructure
-- run `terraform apply` to spin up instance with neard service running as RPC mainnet
-- connect to the instance
-
-# Run the neard service
-- Run <sudo systemctl status neard.service> to view the running neard service
-- Run <sudo systemctl stop neard.service>   to stop the neard service
-- Run <sudo systemctl start neard.service>  to start the neard service
-
-# NB
-- The neard service config file can be found in /etc/systemd/system/neard.service. It starts the mainnet node by running <./target/release/neard --home ~/.near run> command which is found in bash script ./neard.sh.
-
-
+## Instruction
+- Fork the repo.
+- Update the OIDC_ROLEE_ARN value in the github actions secrets
+- Clone the forked repo.
+- Replace the AWS variables and parameters with values associated  with your aws account.
+- Commit and Push Code back to Github to trigger github actions to setup Terraform Infrastructure, Build, Tag, push rpc-node image to Amazon Elastic Container Registry and deploy image to Amazon Elastic Container Service.
