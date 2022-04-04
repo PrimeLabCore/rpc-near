@@ -9,7 +9,6 @@ on:
     branches:
       - main
       - rpc-iac
-  #pull_request:
 
 jobs:
   dev-terraform:
@@ -23,9 +22,6 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
-          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
           aws-region: us-east-1
           role-skip-session-tagging: true
@@ -50,45 +46,19 @@ jobs:
       - name: Terraform Plan
         id: plan
         uses: hashicorp/terraform-github-actions@master
-        # if: github.event_name == 'pull_request'
         with:
           tf_actions_version: 1.1.5
           tf_actions_subcommand: "plan"
           tf_actions_working_dir: "."
           tf_actions_comment: true
           args: '-var-file="./params/us-east-1/dev/variables.tfvars"'
-        
-      # - name: Update Pull Request
-      #   uses: actions/github-script@0.9.0
-      #   if: github.event_name == 'pull_request'
-      #   env:
-      #     PLAN: "terraform\n${{ steps.reformat.outputs.stdout }}"
-      #   with:
-      #     script: |
-      #       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-      #       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-      #       #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-      #       <details><summary>Show Plan</summary>
-      #       \`\`\`\n
-      #       ${process.env.PLAN}
-      #       \`\`\`
-      #       </details>
-      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-      #       github.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
-      #   continue-on-error: true
+    
    
-      # - name: Terraform Plan Status
-      #   if: steps.plan.outcome == 'failure'
-      #   run: exit 1
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
    
       - name: "Terraform Apply"
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 1.1.5
@@ -101,7 +71,6 @@ jobs:
     name: Build RPC Node Image
     runs-on: ubuntu-latest
     environment: dev-us-east-1
-    # if: github.ref == 'refs/heads/main'
     needs: dev-terraform
     steps:
       - name: Checkout
@@ -110,9 +79,6 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
-        #   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        #   aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
           aws-region: us-east-1
           role-skip-session-tagging: true
@@ -161,9 +127,6 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1.6.1
       with:
-        # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         role-to-assume: ${{ secrets.OIDC_ROLE_ARN }}
         aws-region: us-east-1
         role-skip-session-tagging: true
