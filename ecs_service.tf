@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "rpc_node_service" {
-  name                   = "${rpc}-${var.environment}-service"
+  name                   = "rpc-${var.environment}-service"
   cluster                = module.ecs.ecs_cluster_id
   task_definition        = aws_ecs_task_definition.primelab_nodes.arn
   enable_execute_command = true

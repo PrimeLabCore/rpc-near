@@ -100,3 +100,4 @@ variable "container_name" {
   description = "RPC Container name"
   default     = "rpc_node"
 }
+
