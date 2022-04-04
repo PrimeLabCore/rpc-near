@@ -9,7 +9,7 @@ on:
     branches:
       - main
       - rpc-iac
-  pull_request:
+  #pull_request:
 
 jobs:
   dev-terraform:
