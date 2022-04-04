@@ -21,6 +21,7 @@
 
 - AWS Knowledge
     - [Terraform](https://www.terraform.io/)
+        - [Terraform CLI](https://www.terraform.io/cli)
 
 ## File Tree
 
@@ -63,14 +64,15 @@
 
 1. Fork the repo located [here](https://github.com/NearPrime/rpc-near).
 2. Clone the repo by using the following command
-
-```
-git clone git@github.com:(your_github_username)/rpc-near.git
-```
-
-1. Modify the following files:
+    
+    ```
+    git clone git@github.com:(your_github_username)/rpc-near.git
+    ```
+    
+3. Modify the following files:
     1. `params/us-east-1/dev/variables.tfvars`
-2. Run the following commands in your shell to deploy the Terraform service
+    2. `params/us-east-1/dev/backend.config`
+4. Run the following commands in your shell to deploy the Terraform service
     
     ```
     terraform init -var-file="./params/us-east-1/dev/variables.tfvars" -backend-config="./params/us-east-1/dev/backend.config && \
