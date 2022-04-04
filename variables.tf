@@ -102,5 +102,5 @@ variable "container_name" {
 }
 
 variable "rpc_node" {
-  default    = "rpc_node"
+  default = "rpc_node"
 }
