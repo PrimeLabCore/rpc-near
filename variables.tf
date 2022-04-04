@@ -90,13 +90,13 @@ variable "primelab_nodes" {
   description = "Primelab Node Parameters"
   default = {
     "rpc" = {
-      "dockerTag"      = ""
-      "dockerRepo"     = 0
+      "dockerTag"  = ""
+      "dockerRepo" = 0
     }
   }
 }
 
 variable "container_name" {
   description = "RPC Container name"
-  default = "rpc_node"
+  default     = "rpc_node"
 }

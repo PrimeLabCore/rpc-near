@@ -1,10 +1,10 @@
 resource "aws_ecs_task_definition" "primelab_nodes" {
-  family   = "rpc-${var.environment}-service"
+  family = "rpc-${var.environment}-service"
   container_definitions = templatefile("${path.module}/task-definitions/rpc_node.json", {
-    env        = var.environment
-    region     = var.region
-    dockerTag  = var.docker_tag
-    dockerRepo = aws_ecr_repository.near_rpc_for_primelab.repository_url
+    env           = var.environment
+    region        = var.region
+    dockerTag     = var.docker_tag
+    dockerRepo    = aws_ecr_repository.near_rpc_for_primelab.repository_url
     containerName = var.container_name
   })
   requires_compatibilities = ["EC2"]
