@@ -101,7 +101,7 @@ jobs:
     name: Build RPC Node Image
     runs-on: ubuntu-latest
     environment: dev-us-east-1
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     needs: dev-terraform
     steps:
       - name: Checkout
