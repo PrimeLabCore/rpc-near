@@ -152,7 +152,7 @@ jobs:
         continue-on-error: true
 
   rpc-deploy:
-    needs: sandbox-rpc-build
+    needs: dev-rpc-build
     name: Deploy RPC to ECS
     runs-on: ubuntu-latest
     environment: dev-us-east-1
