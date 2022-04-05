@@ -27,7 +27,7 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 - The RPC Deployment Utility allows engineers to worry less about bottlenecks and focus more on the applications they're building. 
 
 **Tech:**
-- The RPC Node utility uses Terraform, Github Actions, AWS Cloud Provider to orchestrate the configuration and deployment of the RPC Node.     
+- The RPC Node utility uses Terraform, Github Actions, AWS Cloud Provider to orchestrate the configuration and deployment of the RPC Node.
 
 ## Prerequisites
 
