@@ -107,7 +107,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/near-rpc-for-primelab/rpc:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -137,20 +137,20 @@ jobs:
     
     - name: Download task definition
       run: |
-        aws ecs describe-task-definition --task-definition rpc-node-dev-service --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition rpc-dev-service --query taskDefinition > task-definition.json
     
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
-        container-name: rpc-dev-node
-        image: ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+        container-name: rpc_node
+        image: ${{ steps.login-ecr.outputs.registry }}/near-rpc-for-primelab/rpc:${{ github.sha }}
     
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: rpc-node-dev-service
-        cluster: near-dev-us-east-1-cluster
+        service: rpc-dev-service
+        cluster: near-rpc-dev-us-east-1-cluster
         wait-for-service-stability: false
