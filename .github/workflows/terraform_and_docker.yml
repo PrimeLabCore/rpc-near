@@ -152,5 +152,5 @@ jobs:
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: rpc-node-dev-service
-        cluster: near-dev-us-east-1-cluster
+        cluster: near-rpc-dev-us-east-1-cluster
         wait-for-service-stability: false
