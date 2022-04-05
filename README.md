@@ -1,21 +1,28 @@
-# Quickly scale up RPC Node deployments via Terraform
+RPC Node Deployment Pipeline from PrimeLab!
+Quickly scale up RPC Node deployments via Terraform
+Contributors:
+PrimeLab Core Tools
+PrimeLab Blockchain Team
 
-## About
+GitHub: RPC-Deployer 4
 
-### Why (is this needed):
+PrimeLab is excited to release the first iteration of our automated RPC Node Utility for NEAR Protocol! This utility enables developers and NEAR project stakeholders to quickly deploy and manage their own RPC node on the NEAR Mainnet!
 
-- With the communication between users and the network relying solely on deployed RPC node infrastructure having the ability to quickly horizontally scale your RPC nodes to handle the required throughput capacity.
+Why (is this needed)
 
-### Who (would this benefit):
+Many projects in the NEAR Ecosystem require their own RPC nodes. The options currently available are not automated and require repetitive & laborious tasks to deploy and maintain.
+Who (would this benefit)
 
-- DAPP Developers
-- Network Metric Aggregators
-- Users in terms of more reliable transaction processing
-- SAAS Providers
+DAPP Developers
+Network Metric Aggregators
+SAAS Providers
+Any project in the NEAR Ecosystem. :slight_smile:
+How (does this achieve a solution):
 
-### How (does this achieve a solution):
+The RPC Deployment Utility allows engineers to worry less about bottlenecks and focus more on the applications they’re building.
+Tech:
 
-- It enables the engineers to have to worry less about being bottle-necked & more about accomplishing their goal
+The RPC Node utility uses Terraform, Packer, and Ansible to orchestrate the configuration and deployment of the RPC Node.
 
 ## Prerequisites
 
