@@ -27,7 +27,7 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 - The RPC Deployment Utility allows engineers to worry less about bottlenecks and focus more on the applications they're building. 
 
 **Tech:**
-- The RPC Node utility uses Terraform, Packer, and Ansible to orchestrate the configuration and deployment of the RPC Node.     
+- The RPC Node utility uses Terraform, Github Actions, AWS Cloud Provider to orchestrate the configuration and deployment of the RPC Node.
 
 ## Prerequisites
 
@@ -39,33 +39,33 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 
 ```
 .
-├── autoscaling.tf
-├── data.tf
+├── autoscaling.tf                      // Autoscaling definition for container instances
+├── data.tf                             // Terraform definition for already existing resources
 ├── Dockerfile                          // RPC node Dockerfile definition, fetches tagged version of nearcore, builds utilizing make, and downloads config.s
-├── ecr.tf
-├── ecs_service.tf
-├── ecs_task_definition..tf
-├── ecs.tf
-├── elb.tf
-├── endpoints.tf
-├── iam.tf
-├── key_pair.tf
-├── launch_templates.tf
-├── main.tf
-├── outputs.tf
+├── ecr.tf                              // RPC node image repository definition
+├── ecs_service.tf                      // RPC node container service definition
+├── ecs_task_definition..tf             // Task definition for ECS 
+├── ecs.tf                              // ECS module definition
+├── elb.tf                              // Network load balancer definition for rpc endpoint
+├── endpoints.tf                        // Endpoints points for rpc definition
+├── iam.tf                              // AWS IAM roles definition for Services
+├── key_pair.tf                         // EC2 Key Pair definition
+├── launch_templates.tf                 // Launch Templates for the ec2 Instance
+├── main.tf                             // Terraform Backend Config
+├── outputs.tf                          // Terraform outputs for aws infrastructure created 
 ├── params
 │   └── us-east-1
 │       └── dev
 │           ├── backend.config         // Includes connection configuration variables (**Modify this file**)
 │           └── variables.tfvars       // Includes additional network variable definition (**Modify this file**)
-├── provider.tf
-├── r53.tf
+├── provider.tf                        // Provider definition for aws infrastructure 
+├── r53.tf                             // AWS route 53 definition
 ├── README.md
-├── secrets_manager.tf
-├── security_groups.tf
+├── secrets_manager.tf                 // Defines the secret key and version
+├── security_groups.tf                 // Defines the allowed and disallowed connections to the network
 ├── task-definitions
 │   └── rpc_node.json                  // Defines the properties of the RPC node container
-├── tls_private_key.tf
+├── tls_private_key.tf                 // Defines the private key for tls termination
 ├── userdata
 │   └── ecs_user_data.sh               // Includes the `ECS_CLUSTER` variable definition in `/etc/ecs/ecs.config`
 ├── variables.tf                       // Defines the shared variables used in the service
@@ -84,10 +84,19 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 3. Modify the following files:
     1. `params/us-east-1/dev/variables.tfvars`
     2. `params/us-east-1/dev/backend.config`
-4. Run the following commands in your shell to deploy the Terraform service
+
+4. Run the following commands in your shell to view the Terraform plan service locally
     
     ```
     terraform init -var-file="./params/us-east-1/dev/variables.tfvars" -backend-config="./params/us-east-1/dev/backend.config && \
-    terraform plan -var-file="./params/us-east-1/dev/variables.tfvars" && \
-    terraform apply -var-file="./params/us-east-1/dev/variables.tfvars"
+    terraform plan -var-file="./params/us-east-1/dev/variables.tfvars"    
     ```
+
+5. Commit and push modification to forked repo to trigger ci/cd build with Github actions
+
+6. Wait for a couple hours for Infrastructure to come up and image tagged, built, deployed to amazon ECS
+
+<h3> DISCLAIMER </h3>
+
+-   The means of authentication to AWS from Github is with the use of Open ID Connect.
+-   Update the OIDC_ROLE_ARN value in the secrets setting of the forked github repo.
