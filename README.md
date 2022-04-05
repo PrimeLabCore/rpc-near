@@ -97,5 +97,6 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 6. Wait for a couple hours for Infrastructure to come up and image tagged, built, deployed to amazon ECS
 
 <h3> DISCLAIMER </h3>
-- The means of authentication to AWS from Github is with the use of Open ID Connect.
-- Update the OIDC_ROLE_ARN value in the secrets setting of the forked github repo.
+
+-   The means of authentication to AWS from Github is with the use of Open ID Connect.
+-   Update the OIDC_ROLE_ARN value in the secrets setting of the forked github repo.
