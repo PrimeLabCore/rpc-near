@@ -39,33 +39,33 @@ PrimeLab is excited to release the first iteration of our automated RPC Node Uti
 
 ```
 .
-├── autoscaling.tf
-├── data.tf
+├── autoscaling.tf                      // Autoscaling definition for container instances
+├── data.tf                             // Terraform definition for already existing resources
 ├── Dockerfile                          // RPC node Dockerfile definition, fetches tagged version of nearcore, builds utilizing make, and downloads config.s
 ├── ecr.tf                              // RPC node image repository definition
 ├── ecs_service.tf                      // RPC node container service definition
 ├── ecs_task_definition..tf             // Task definition for ECS 
 ├── ecs.tf                              // ECS module definition
-├── elb.tf                              // E
-├── endpoints.tf
-├── iam.tf
-├── key_pair.tf
-├── launch_templates.tf
-├── main.tf
-├── outputs.tf
+├── elb.tf                              // Network load balancer definition for rpc endpoint
+├── endpoints.tf                        // Endpoints points for rpc definition
+├── iam.tf                              // AWS IAM roles definition for Services
+├── key_pair.tf                         // EC2 Key Pair definition
+├── launch_templates.tf                 // Launch Templates for the ec2 Instance
+├── main.tf                             // Terraform Backend Config
+├── outputs.tf                          // Terraform outputs for aws infrastructure created 
 ├── params
 │   └── us-east-1
 │       └── dev
 │           ├── backend.config         // Includes connection configuration variables (**Modify this file**)
 │           └── variables.tfvars       // Includes additional network variable definition (**Modify this file**)
-├── provider.tf
-├── r53.tf
+├── provider.tf                        // Provider definition for aws infrastructure 
+├── r53.tf                             // AWS route 53 definition
 ├── README.md
-├── secrets_manager.tf
-├── security_groups.tf
+├── secrets_manager.tf                 // Defines the secret key and version
+├── security_groups.tf                 // Defines the allowed and disallowed connections to the network
 ├── task-definitions
 │   └── rpc_node.json                  // Defines the properties of the RPC node container
-├── tls_private_key.tf
+├── tls_private_key.tf                 // Defines the private key for tls termination
 ├── userdata
 │   └── ecs_user_data.sh               // Includes the `ECS_CLUSTER` variable definition in `/etc/ecs/ecs.config`
 ├── variables.tf                       // Defines the shared variables used in the service
