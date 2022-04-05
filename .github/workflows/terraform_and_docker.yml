@@ -145,7 +145,7 @@ jobs:
       with:
         task-definition: task-definition.json
         container-name: rpc-dev-node
-        image: ${{ steps.login-ecr.outputs.registry }}/near-for-primelab/rpc:${{ github.sha }}
+        image: ${{ steps.login-ecr.outputs.registry }}/near-rpc-for-primelab/rpc:${{ github.sha }}
     
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
