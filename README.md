@@ -1,28 +1,33 @@
-RPC Node Deployment Pipeline from PrimeLab!
-Quickly scale up RPC Node deployments via Terraform
-Contributors:
-PrimeLab Core Tools
-PrimeLab Blockchain Team
+# RPC Node Deployment Pipeline from PrimeLab!
 
-GitHub: RPC-Deployer 4
+### Quickly scale up RPC Node deployments via Terraform
+ 
+ 
+**Contributors:**  
+[PrimeLab Core Tools](https://primelab.io/)
+[PrimeLab Blockchain Team](https://primelab.io/)
+
+**GitHub:**  [RPC-Deployer](https://github.com/NearPrime/rpc-near)
 
 PrimeLab is excited to release the first iteration of our automated RPC Node Utility for NEAR Protocol! This utility enables developers and NEAR project stakeholders to quickly deploy and manage their own RPC node on the NEAR Mainnet!
 
-Why (is this needed)
+**Why (is this needed)**
 
-Many projects in the NEAR Ecosystem require their own RPC nodes. The options currently available are not automated and require repetitive & laborious tasks to deploy and maintain.
-Who (would this benefit)
+-   Many projects in the NEAR Ecosystem require their own RPC nodes. The options currently available are not automated and require repetitive & laborious tasks to deploy and maintain.
 
-DAPP Developers
-Network Metric Aggregators
-SAAS Providers
-Any project in the NEAR Ecosystem. :slight_smile:
-How (does this achieve a solution):
+**Who (would this benefit)**
 
-The RPC Deployment Utility allows engineers to worry less about bottlenecks and focus more on the applications they’re building.
-Tech:
+-   DAPP Developers
+-   Network Metric Aggregators
+-   SAAS Providers 
+-   Any project in the NEAR Ecosystem. :)
 
-The RPC Node utility uses Terraform, Packer, and Ansible to orchestrate the configuration and deployment of the RPC Node.
+**How (does this achieve a solution):**
+
+- The RPC Deployment Utility allows engineers to worry less about bottlenecks and focus more on the applications they're building. 
+
+**Tech:**
+- The RPC Node utility uses Terraform, Packer, and Ansible to orchestrate the configuration and deployment of the RPC Node.     
 
 ## Prerequisites
 
